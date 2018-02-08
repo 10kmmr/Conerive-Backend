@@ -1,16 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var methodOveride = require('method-override');
-
-var mysql = require("mysql");
-var connectionObject = {
-    host: "localhost",
-    user: 'root',
-    password: 'Abhijeeth29$',
-    database: 'conerivedev',
-    port: 3306
-  };
-
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -38,7 +28,7 @@ app.use(function(err, req, res, next) {
 });
 
 app.listen(8080, function () {
-    console.log("FPP server is running")
+    console.log("FPP server is running");
 });
 
 

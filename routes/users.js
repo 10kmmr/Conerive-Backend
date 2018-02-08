@@ -4,13 +4,7 @@
 
 var express = require('express');
 var mysql = require('mysql');
-var connectionObject = {
-    host: "localhost",
-    user: 'root',
-    password: 'Abhijeeth29$',
-    database: 'conerivedev',
-    port: 3306
-  };
+var connectionObject = require('./config/database');
 var router = express.Router();
 
 // =====================
