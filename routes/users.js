@@ -4,9 +4,11 @@
 
 var express = require('express');
 var mysql = require('mysql');
+var bodyParser = require('body-parser');
 var connectionObject = require('../config/database');
 var router = express.Router();
 
+router.use(bodyParser.urlencoded({extended:true}));
 // =====================
 //      ROUTES
 // =====================
@@ -23,26 +25,37 @@ router.get('/new', function(req, res){
 
 // CREATE - creates a new user
 router.post("/", function(req, res){
-
-
-	res.send("CREATE route");
 	// TODO - insert a new user into the DB 
+	var userId = req.body.userId;
+	var name = req.body.name;
+	var phone = req.body.phone;
+	console.log(userId);
+	console.log(name);
+	console.log(phone);
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		console.log(userId);
+		console.log(name);
+		console.log(phone);
+		if(err) { console.log("1"+err) }
+		else{
+			var queryFields = "User_id, Name, Phone";
+			var values = [[userId, name, phone]];
+			var query = "INSERT INTO (" + queryFields + ") VALUES ?"
+			connection.query(query, [values], function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					console.log("user created");
+					connection.end();
+					res.send("CREATE route");
+				}
+			});
+		}
+	});
 });
 
 // SHOW - returns details about a single user
 router.get("/:id", function(req, res){
-	var connection = mysql.createConnection(connectionObject);
-	connection.connect(function(err){
-		if(err) { console.log(err) }
-		else {
-			connection.query("SELECT * FROM USERS", function (err2, users, fields) {
-				console.log(users);
-				// console.log(fields);
-				connection.end();
-				res.send("SHOW route");
-			});
-		}
-	});
 	// TODO - get details about a user
 });
 

@@ -12,4 +12,4 @@ var AbhiLocal = {
     database: 'conerivedev',
     port: 3306
   };
-  module.exports = PrithviLocal;
+  module.exports = AbhiLocal;
