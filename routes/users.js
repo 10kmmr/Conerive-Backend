@@ -4,7 +4,7 @@
 
 var express = require('express');
 var mysql = require('mysql');
-var connectionObject = require('./config/database');
+var connectionObject = require('../config/database');
 var router = express.Router();
 
 // =====================
@@ -23,13 +23,26 @@ router.get('/new', function(req, res){
 
 // CREATE - creates a new user
 router.post("/", function(req, res){
+
+
 	res.send("CREATE route");
 	// TODO - insert a new user into the DB 
 });
 
 // SHOW - returns details about a single user
 router.get("/:id", function(req, res){
-	res.send("SHOW route");
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function(err){
+		if(err) { console.log(err) }
+		else {
+			connection.query("SELECT * FROM USERS", function (err2, users, fields) {
+				console.log(users);
+				// console.log(fields);
+				connection.end();
+				res.send("SHOW route");
+			});
+		}
+	});
 	// TODO - get details about a user
 });
 
