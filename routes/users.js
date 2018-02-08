@@ -29,19 +29,13 @@ router.post("/", function(req, res){
 	var userId = req.body.userId;
 	var name = req.body.name;
 	var phone = req.body.phone;
-	console.log(userId);
-	console.log(name);
-	console.log(phone);
 	var connection = mysql.createConnection(connectionObject);
 	connection.connect(function (err) {
-		console.log(userId);
-		console.log(name);
-		console.log(phone);
 		if(err) { console.log("1"+err) }
 		else{
 			var queryFields = "User_id, Name, Phone";
 			var values = [[userId, name, phone]];
-			var query = "INSERT INTO (" + queryFields + ") VALUES ?"
+			var query = "INSERT INTO USERS(" + queryFields + ") VALUES ?"
 			connection.query(query, [values], function(err2, results, fields){
 				if (err2) { console.log(err2); }
 				else {
