@@ -9,6 +9,7 @@ var connectionObject = require('../config/database');
 var router = express.Router();
 
 router.use(bodyParser.urlencoded({extended:true}));
+
 // =====================
 //      ROUTES
 // =====================
