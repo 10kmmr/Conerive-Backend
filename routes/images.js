@@ -39,7 +39,7 @@ router.post("/", function(req, res){
 	connection.connect(function (err) {
 		if(err) { console.log(err) }
 		else{
-			var queryFields = "Image_path, Image_time, Image_lat, Image_lng, User_id, Trip_id";
+			var queryFields = "Image_url, Image_time, Image_lat, Image_lng, User_id, Trip_id";
 			var values = [[imageURL, imageTime, imageLat, imageLng, userId, tripId]];
 			var query = "INSERT INTO IMAGES(" + queryFields + ") VALUES ?"
 			connection.query(query, [values], function(err2, results, fields){
