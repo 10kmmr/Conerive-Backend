@@ -12,8 +12,10 @@ var groupDisplayPictures = require('./routes/groups/display_pictures');
 var groupMembers = require('./routes/group_members');
 var trips = require('./routes/trips/trips');
 var notificationRadius = require('./routes/trips/notification_radius');
+var tripMembers = require('./routes/trip_members');
 var images = require('./routes/images');
-
+var vehicles = require('./routes/vehicles/vehicles');
+var vehicleMembers = require('./routes/vehicle_members');
 
 var app = express();
 
@@ -24,10 +26,13 @@ app.use('/users/display-pictures', userDisplayPictures);
 app.use('/users/emails', emails);
 app.use('/groups', groups);
 app.use('/groups/display-pictures', groupDisplayPictures);
-app.use('/groups/group-members', groupMembers);
+app.use('/group-members', groupMembers);
 app.use('/trips', trips);
 app.use('/trips/notification-radius', notificationRadius);
+app.use('/trip-members', tripMembers);
 app.use('/images', images);
+app.use('/vehicles', vehicles);
+app.use('/vehicle-members', vehicleMembers);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

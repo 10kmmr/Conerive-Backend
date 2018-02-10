@@ -36,7 +36,7 @@ router.post("/", function(req, res){
 		if(err) { console.log(err) }
 		else{
 			var queryFields = "Trip_id, User_id";
-			var values = [[groupId, userId]];
+			var values = [[tripId, userId]];
 			var query = "INSERT INTO TRIP_MEMBERS (" + queryFields + ") VALUES ?"
 			connection.query(query, [values], function(err2, results, fields){
 				if (err2) { console.log(err2); }

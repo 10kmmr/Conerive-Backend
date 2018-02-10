@@ -28,27 +28,23 @@ router.get('/new', function(req, res){
 // CREATE - creates a new user
 router.post("/", function(req, res){
 
-	var userId = req.body.userId;
-	var name = req.body.name;
-	var phone = req.body.phone;
-	var displayPictureURL = req.body.displayPictureURL;
+	var vehicleName = req.body.vehicleName;
+	var vehicleType = req.body.vehicleType;
+	var driverId = req.body.driverId;
+	var tripId = req.body.tripId;
 
 	var connection = mysql.createConnection(connectionObject);
 	connection.connect(function (err) {
 		if(err) { console.log(err) }
 		else{
-			var queryFields = "User_id, Name, Phone";
-			var values = [[userId, name, phone]];
-			var query = "INSERT INTO USERS(" + queryFields + ") VALUES ?"
+			var queryFields = "Vehicle_name, Vehicle_type, Driver_id, Trip_id";
+			var values = [[vehicleName, vehicleType, driverId, tripId]];
+			var query = "INSERT INTO VEHICLES (" + queryFields + ") VALUES ?"
 			connection.query(query, [values], function(err2, results, fields){
 				if (err2) { console.log(err2); }
 				else {
 					connection.end();
-					if(displayPictureURL!=undefined && displayPictureURL!=null){
-						res.redirect(307, "/users/display-pictures/");
-					} else {
-						res.send("user created");				
-					}
+					res.send("vehicle  created");
 				}
 			});
 		}
