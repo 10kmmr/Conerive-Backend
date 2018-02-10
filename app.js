@@ -2,17 +2,28 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var methodOveride = require('method-override');
 
+//ROUTE FILES
 var index = require('./routes/index');
-var users = require('./routes/users');
-var groups = require('./routes/groups');
+var users = require('./routes/users/users');
+var userDisplayPictures = require('./routes/users/display_pictures');
+var emails = require('./routes/users/emails');
+var groups = require('./routes/groups/groups');
+var groupDisplayPictures = require('./routes/groups/display_pictures');
+var notificationRadius = require('./routes/groups/notification_radius')
 var trips = require('./routes/trips');
 var images = require('./routes/images');
 
+
 var app = express();
 
+//ROUTES
 app.use('/', index);
 app.use('/users', users);
+app.use('/users/display-pictures', userDisplayPictures);
+app.use('/users/emails', emails);
 app.use('/groups', groups);
+app.use('/groups/display-pictures', groupDisplayPictures);
+app.use('/groups/notification-radius', notificationRadius)
 app.use('/trips', trips);
 app.use('/images', images);
 

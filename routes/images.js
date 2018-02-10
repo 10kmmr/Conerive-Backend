@@ -26,7 +26,7 @@ router.get('/new', function(req, res){
 
 // CREATE - creates a new image
 router.post("/", function(req, res){
-	// TODO - insert a new image into the DB 
+	res.send("new image created");
 });
 
 // SHOW - returns details about a single image
