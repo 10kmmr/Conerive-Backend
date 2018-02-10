@@ -24,9 +24,19 @@ router.get('/new', function(req, res){
 	res.send("no new");
 });
 
-// CREATE - creates a new group
+// CREATE - creates a new group //not finished
 router.post("/", function(req, res){
-	// TODO - insert a new group into the DB 
+	var groupName = req.body.groupName;
+	var adminId = req.body.adminId;
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		if(err) { console.log(err) }
+		else{
+			var queryFields = "Group_name, Admin_id, Phone";
+			var values = [[userId, name, phone]];
+			var query = "INSERT INTO USERS(" + queryFields + ") VALUES ?"
+		}
+	});
 });
 
 // SHOW - returns details about a single group
