@@ -7,6 +7,7 @@ var mysql = require('mysql');
 var bodyParser = require('body-parser');
 var connectionObject = require('../config/database');
 var router = express.Router();
+var querystring = require("querystring");
 
 router.use(bodyParser.urlencoded({extended:true}));
 

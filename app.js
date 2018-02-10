@@ -9,8 +9,9 @@ var userDisplayPictures = require('./routes/users/display_pictures');
 var emails = require('./routes/users/emails');
 var groups = require('./routes/groups/groups');
 var groupDisplayPictures = require('./routes/groups/display_pictures');
-var notificationRadius = require('./routes/groups/notification_radius')
-var trips = require('./routes/trips');
+var groupMembers = require('./routes/group_members');
+var trips = require('./routes/trips/trips');
+var notificationRadius = require('./routes/trips/notification_radius');
 var images = require('./routes/images');
 
 
@@ -23,8 +24,9 @@ app.use('/users/display-pictures', userDisplayPictures);
 app.use('/users/emails', emails);
 app.use('/groups', groups);
 app.use('/groups/display-pictures', groupDisplayPictures);
-app.use('/groups/notification-radius', notificationRadius)
+app.use('/groups/group-members', groupMembers);
 app.use('/trips', trips);
+app.use('/trips/notification-radius', notificationRadius);
 app.use('/images', images);
 
 // catch 404 and forward to error handler

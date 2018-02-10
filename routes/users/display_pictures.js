@@ -7,6 +7,7 @@ var mysql = require('mysql');
 var bodyParser = require('body-parser');
 var connectionObject = require('../../config/database');
 var router = express.Router();
+var querystring = require("querystring");
 
 router.use(bodyParser.urlencoded({extended:true}));
 
@@ -32,7 +33,7 @@ router.post("/", function(req, res){
 	connection.connect(function (err) {
 		if(err) { console.log(err) }
 		else{
-			var queryFields = "User_id, Image_path";
+			var queryFields = "User_id, Image_url";
 			var values = [[userId, displayPictureURL]];
 			var query = "INSERT INTO USER_DISPLAY_PICTURES(" + queryFields + ") VALUES ?"
 			connection.query(query, [values], function(err2, results, fields){
