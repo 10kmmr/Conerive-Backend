@@ -32,9 +32,16 @@ router.post("/", function(req, res){
 	connection.connect(function (err) {
 		if(err) { console.log(err) }
 		else{
-			var queryFields = "Group_name, Admin_id, Phone";
-			var values = [[userId, name, phone]];
-			var query = "INSERT INTO USERS(" + queryFields + ") VALUES ?"
+			var queryFields = "Group_name, Admin_id";
+			var values = [[groupName, adminId]];
+			var query = "INSERT INTO GROUPS(" + queryFields + ") VALUES ?"
+			connection.query(query, [values], function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					connection.end();
+					res.send("group created");
+				}
+			});
 		}
 	});
 });

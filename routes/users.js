@@ -42,7 +42,7 @@ router.post("/", function(req, res){
 				else {
 					console.log("user created");
 					connection.end();
-					res.send("CREATE route");
+					res.send("user created");
 				}
 			});
 		}
