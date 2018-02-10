@@ -29,22 +29,29 @@ router.get('/new', function(req, res){
 router.post("/", function(req, res){
 	var userId = req.body.userId;
 	var displayPictureURL = req.body.displayPictureURL;
-	var connection = mysql.createConnection(connectionObject);
-	connection.connect(function (err) {
-		if(err) { console.log(err) }
-		else{
-			var queryFields = "User_id, Image_url";
-			var values = [[userId, displayPictureURL]];
-			var query = "INSERT INTO USER_DISPLAY_PICTURES(" + queryFields + ") VALUES ?"
-			connection.query(query, [values], function(err2, results, fields){
-				if (err2) { console.log(err2); }
-				else {
-					connection.end();
-					res.send("user display picture created");
-				}
-			});
-		}
-	});
+	if (userId!=undefined && displayPictureURL!=undefined 
+		&& userId!=null && displayPictureURL!=null) {
+
+		var connection = mysql.createConnection(connectionObject);
+		connection.connect(function (err) {
+			if(err) { console.log(err) }
+			else{
+				var queryFields = "User_id, Image_url";
+				var values = [[userId, displayPictureURL]];
+				var query = "INSERT INTO USER_DISPLAY_PICTURES(" + queryFields + ") VALUES ?"
+				connection.query(query, [values], function(err2, results, fields){
+					if (err2) { console.log(err2); }
+					else {
+						console.log("display picture inserted");			
+						connection.end();
+						res.redirect(307, "/users/emails");
+					}
+				});
+			}
+		});
+	} else {
+		res.redirect(307, "/users/emails");
+	}
 });
 
 
