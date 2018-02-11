@@ -29,8 +29,7 @@ router.get('/new', function(req, res){
 router.post("/", function(req, res){
 	var userId = req.body.userId;
 	var displayPictureURL = req.body.displayPictureURL;
-	if (userId!=undefined && displayPictureURL!=undefined 
-		&& userId!=null && displayPictureURL!=null) {
+	if (displayPictureURL!=undefined && displayPictureURL!=null) {
 
 		var connection = mysql.createConnection(connectionObject);
 		connection.connect(function (err) {
@@ -57,8 +56,27 @@ router.post("/", function(req, res){
 
 
 // SHOW - returns details about a single user display picture
-router.get("/:id", function(req, res){
-	// TODO - get details about a user display picture
+router.get("/:userId", function(req, res){
+	var userId = req.params.userId;
+	var connection = mysql.createConnection(connectionObject);
+	
+	connection.connect(function (err) {
+		if(err) { console.log(err) }
+		else{
+
+			var query = "SELECT * FROM USER_DISPLAY_PICTURES";
+			query += " WHERE User_id = '" + userId + "'";
+			
+			connection.query(query , function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					console.log(results);
+					connection.end();
+					res.send(results);
+				}
+			});
+		}
+	});
 });
 
 // EDIT - returns current details of a single user display picture
@@ -67,15 +85,52 @@ router.get("/:id/edit", function(req, res) {
 });
 
 // UPDATE - updates DB with new details
-router.put("/:id", function(req, res){
-	res.send("UPDATE route");
-	// TODO - update DB details of single user display picture
+router.put("/:userId", function(req, res){
+	var userId = req.params.userId;
+	var displayPictureURL = req.body.displayPictureURL;
+
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		if(err) { console.log(err) }
+		else{
+
+			var query = "UPDATE USER_DISPLAY_PICTURES SET";
+			query += " Image_url = '" + displayPictureURL + "'";
+			query += " WHERE User_id = '" + userId + "'";
+			
+			connection.query(query , function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					console.log(results);
+					connection.end();
+					res.send(results);
+				}
+			});
+		}
+	});
 });
 
 // DESTROY - deletes a user display picture from the DB
-router.delete("/:id", function(req, res){
-	res.send("DESTROY route");
-	// TODO - delete user display picture from DB
+router.delete("/:userId", function(req, res){
+	var userId = req.params.userId;
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		if(err) { console.log(err) }
+		else{
+
+			var query = "DELETE FROM USER_DISPLAY_PICTURES";
+			query += " WHERE User_id = '" + userId + "'";
+			
+			connection.query(query , function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					console.log(results);
+					connection.end();
+					res.send(results);
+				}
+			});
+		}
+	});
 });
 
 module.exports = router;

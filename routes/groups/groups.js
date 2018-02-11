@@ -39,9 +39,9 @@ router.post("/", function(req, res){
 			connection.query(query, [values], function(err2, results, fields){
 				if (err2) { console.log(err2); }
 				else {
-					console.log(results)
+					console.log(results.insertId)
 					connection.end();
-					res.send("group created");
+					res.redirect(307, "/groups/display-pictures/"+results.insertId);
 				}
 			});
 		}

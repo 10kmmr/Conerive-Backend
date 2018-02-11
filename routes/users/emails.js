@@ -30,8 +30,7 @@ router.post("/", function(req, res){
 	var userId = req.body.userId;
 	var email = req.body.email;
 
-	if (userId!=undefined && email!=undefined 
-		&& userId!=null && email!=null) {
+	if (email!=undefined && email!=null) {
 
 		var connection = mysql.createConnection(connectionObject);
 		connection.connect(function (err) {
@@ -58,8 +57,26 @@ router.post("/", function(req, res){
 
 
 // SHOW - returns details about a single email
-router.get("/:id", function(req, res){
-	// TODO - get details about a email
+router.get("/:userId", function(req, res){
+	var userId = req.params.userId;
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		if(err) { console.log(err) }
+		else{
+
+			var query = "SELECT * FROM EMAILS";
+			query += " WHERE User_id = '" + userId + "'";
+			
+			connection.query(query , function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					console.log(results);
+					connection.end();
+					res.send(results);
+				}
+			});
+		}
+	});
 });
 
 // EDIT - returns current details of a single email
@@ -68,15 +85,52 @@ router.get("/:id/edit", function(req, res) {
 });
 
 // UPDATE - updates DB with new email
-router.put("/:id", function(req, res){
-	res.send("UPDATE route");
-	// TODO - update DB details of single email
+router.put("/:userId", function(req, res){
+	var userId = req.params.userId;
+	var email = req.body.email;
+
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		if(err) { console.log(err) }
+		else{
+
+			var query = "UPDATE EMAILS SET";
+			query += " Email_id = '" + email + "'";
+			query += " WHERE User_id = '" + userId + "'";
+			
+			connection.query(query , function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					console.log(results);
+					connection.end();
+					res.send(results);
+				}
+			});
+		}
+	});
 });
 
 // DESTROY - deletes a email from the DB
-router.delete("/:id", function(req, res){
-	res.send("DESTROY route");
-	// TODO - delete email from DB
+router.delete("/:userId", function(req, res){
+	var userId = req.params.userId;
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		if(err) { console.log(err) }
+		else{
+
+			var query = "DELETE FROM EMAILS";
+			query += " WHERE User_id = '" + userId + "'";
+			
+			connection.query(query , function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					console.log(results);
+					connection.end();
+					res.send(results);
+				}
+			});
+		}
+	});
 });
 
 module.exports = router;

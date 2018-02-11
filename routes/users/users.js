@@ -57,8 +57,28 @@ router.post("/", function(req, res){
 });
 
 // SHOW - returns details about a single user
-router.get("/:id", function(req, res){
-	// TODO - get details about a user
+router.get("/:userId", function(req, res){
+	var userId = req.params.userId;
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		if(err) { console.log(err) }
+		else{
+
+			var query = "SELECT * FROM USERS";
+			query += " NATURAL LEFT JOIN USER_DISPLAY_PICTURES";
+			query += " NATURAL LEFT JOIN EMAILS";
+			query += " WHERE User_id = '" + userId + "'";
+			
+			connection.query(query , function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					console.log(results);
+					connection.end();
+					res.send(results);
+				}
+			});
+		}
+	});
 });
 
 // EDIT - returns current details of a single user
@@ -67,14 +87,54 @@ router.get("/:id/edit", function(req, res) {
 });
 
 // UPDATE - updates DB with new details
-router.put("/:id", function(req, res){
-	res.send("UPDATE route");
-	// TODO - update DB details of single user 
+router.put("/:userId", function(req, res){
+	var userId = req.params.userId;
+	var name = req.body.name;
+	var phone = req.body.phone;
+
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		if(err) { console.log(err) }
+		else{
+
+			var query = "UPDATE USERS SET";
+			query += " Name = '" + name + "'";
+			query += ", Phone = '" + phone + "'";
+			query += " WHERE User_id = '" + userId + "'";
+			
+			connection.query(query , function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					console.log(results);
+					connection.end();
+					res.send(results);
+				}
+			});
+		}
+	});
 });
 
 // DESTROY - deletes a user from the DB
 router.delete("/:userId", function(req, res){
-	res.send("user deleted from DB");
+	var userId = req.params.userId;
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		if(err) { console.log(err) }
+		else{
+
+			var query = "DELETE FROM USERS";
+			query += " WHERE User_id = '" + userId + "'";
+			
+			connection.query(query , function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					console.log(results);
+					connection.end();
+					res.send(results);
+				}
+			});
+		}
+	});
 });
 
 module.exports = router;

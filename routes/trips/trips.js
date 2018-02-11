@@ -44,7 +44,7 @@ router.post("/", function(req, res){
 				if (err2) { console.log(err2); }
 				else {
 					connection.end();
-					res.send("trip created");
+					res.send(results);
 				}
 			});
 		}

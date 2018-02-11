@@ -26,26 +26,28 @@ router.get('/new', function(req, res){
 });
 
 // CREATE - creates a new group display picture
-router.post("/", function(req, res){
-	var groupId = req.body.groupId;
+router.post("/:groupId", function(req, res){
+	var groupId = req.params.groupId;
 	var displayPictureURL = req.body.displayPictureURL;
-	
-	var connection = mysql.createConnection(connectionObject);
-	connection.connect(function (err) {
-		if(err) { console.log(err) }
-		else{
-			var queryFields = "Group_id, Image_url";
-			var values = [[groupId, displayPictureURL]];
-			var query = "INSERT INTO GROUP_DISPLAY_PICTURES(" + queryFields + ") VALUES ?"
-			connection.query(query, [values], function(err2, results, fields){
-				if (err2) { console.log(err2); }
-				else {
-					connection.end();
-					res.send("group display picture created");
-				}
-			});
-		}
-	});
+	if (displayPictureURL!=null && displayPictureURL!=null){
+		
+		var connection = mysql.createConnection(connectionObject);
+		connection.connect(function (err) {
+			if(err) { console.log(err) }
+			else{
+				var queryFields = "Group_id, Image_url";
+				var values = [[groupId, displayPictureURL]];
+				var query = "INSERT INTO GROUP_DISPLAY_PICTURES(" + queryFields + ") VALUES ?"
+				connection.query(query, [values], function(err2, results, fields){
+					if (err2) { console.log(err2); }
+					else {
+						connection.end();
+						res.send("group display picture created");
+					}
+				});
+			}
+		});
+	}
 });
 
 
