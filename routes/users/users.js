@@ -31,6 +31,8 @@ router.post("/", function(req, res){
 	var userId = req.body.userId;
 	var name = req.body.name;
 	var phone = req.body.phone;
+	console.log(userId, name, phone);
+	console.log(req.body);
 	if (userId!=undefined && name!=undefined && phone!=undefined 
 				&& userId!=null && name!=null && phone!=null) {
 

@@ -29,6 +29,7 @@ router.get('/new', function(req, res){
 router.post("/", function(req, res){
 	var userId = req.body.userId;
 	var email = req.body.email;
+	console.log(req.body);
 
 	if (email!=undefined && email!=null) {
 
