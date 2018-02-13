@@ -26,8 +26,8 @@ router.get('/new', function(req, res){
 });
 
 // CREATE - creates a new group display picture
-router.post("/:groupId", function(req, res){
-	var groupId = req.params.groupId;
+router.post("/", function(req, res){
+	var groupId = req.body.groupId;
 	var displayPictureURL = req.body.displayPictureURL;
 	if (displayPictureURL!=null && displayPictureURL!=null){
 		
@@ -41,8 +41,9 @@ router.post("/:groupId", function(req, res){
 				connection.query(query, [values], function(err2, results, fields){
 					if (err2) { console.log(err2); }
 					else {
+						console.log("group display picture inserted");
 						connection.end();
-						res.send("group display picture created");
+						res.send(results);
 					}
 				});
 			}

@@ -29,30 +29,24 @@ router.get('/new', function(req, res){
 router.post("/", function(req, res){
 	var userId = req.body.userId;
 	var email = req.body.email;
-	console.log(req.body);
 
-	if (email!=undefined && email!=null) {
-
-		var connection = mysql.createConnection(connectionObject);
-		connection.connect(function (err) {
-			if(err) { console.log(err) }
-			else{
-				var queryFields = "User_id, Email_id";
-				var values = [[userId, email]];
-				var query = "INSERT INTO EMAILS(" + queryFields + ") VALUES ?"
-				connection.query(query, [values], function(err2, results, fields){
-					if (err2) { console.log(err2); }
-					else {
-						console.log("email inserted");			
-						connection.end();
-						res.send("email id created");
-					}
-				});
-			}
-		});
-	} else {
-		res.send("email id not created");
-	}
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		if(err) { console.log(err) }
+		else{
+			var queryFields = "User_id, Email_id";
+			var values = [[userId, email]];
+			var query = "INSERT INTO EMAILS(" + queryFields + ") VALUES ?"
+			connection.query(query, [values], function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					console.log("email inserted");			
+					connection.end();
+					res.send(results);
+				}
+			});
+		}
+	});
 });
 
 

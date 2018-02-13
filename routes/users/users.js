@@ -31,31 +31,23 @@ router.post("/", function(req, res){
 	var userId = req.body.userId;
 	var name = req.body.name;
 	var phone = req.body.phone;
-	console.log(userId, name, phone);
-	console.log(req.body);
-	if (userId!=undefined && name!=undefined && phone!=undefined 
-				&& userId!=null && name!=null && phone!=null) {
-
-		var connection = mysql.createConnection(connectionObject);
-		connection.connect(function (err) {
-			if(err) { console.log(err) }
-			else{
-				var queryFields = "User_id, Name, Phone";
-				var values = [[userId, name, phone]];
-				var query = "INSERT INTO USERS(" + queryFields + ") VALUES ?"
-				connection.query(query, [values], function(err2, results, fields){
-					if (err2) { console.log(err2); }
-					else {
-						console.log("user inserted");
-						connection.end();
-						res.redirect(307, "/users/display-pictures/");
-					}
-				});
-			}
-		});
-	} else {
-		res.redirect(307, "/users/display-pictures/");
-	}
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		if(err) { console.log(err) }
+		else{
+			var queryFields = "User_id, Name, Phone";
+			var values = [[userId, name, phone]];
+			var query = "INSERT INTO USERS(" + queryFields + ") VALUES ?"
+			connection.query(query, [values], function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					console.log("user inserted");
+					connection.end();
+					res.send(results);
+				}
+			});
+		}
+	});
 });
 
 // SHOW - returns details about a single user

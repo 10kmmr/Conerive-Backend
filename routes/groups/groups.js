@@ -39,9 +39,9 @@ router.post("/", function(req, res){
 			connection.query(query, [values], function(err2, results, fields){
 				if (err2) { console.log(err2); }
 				else {
-					console.log(results.insertId)
+					console.log("group inserted with id "+results.insertId);
 					connection.end();
-					res.redirect(307, "/groups/display-pictures/"+results.insertId);
+					res.send(results);
 				}
 			});
 		}
@@ -49,8 +49,8 @@ router.post("/", function(req, res){
 });
 
 // SHOW - returns details about a single group
-router.get("/:id", function(req, res){
-	// TODO - get details about a user
+router.get("/:groupId", function(req, res){
+	res.send("to do");
 });
 
 // EDIT - returns current details of a single group

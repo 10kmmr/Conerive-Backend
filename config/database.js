@@ -22,4 +22,4 @@ var NetworkDB = {
     port: 3306
   };
 
-  module.exports = NetworkDB;
+  module.exports = AbhiLocal;

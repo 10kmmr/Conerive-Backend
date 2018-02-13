@@ -42,7 +42,7 @@ router.post("/", function(req, res){
 				if (err2) { console.log(err2); }
 				else {
 					connection.end();
-					res.send("trip notification radius created");
+					res.send(results);
 				}
 			});
 		}
