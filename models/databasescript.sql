@@ -14,7 +14,7 @@ CREATE TABLE USERS (
 CREATE TABLE USER_DISPLAY_PICTURES (
 	User_id VARCHAR(100) PRIMARY KEY,
 	FOREIGN KEY(User_id) REFERENCES USERS(User_id) ON DELETE CASCADE,
-	Image_url VARCHAR(100) NOT NULL
+	Image_url VARCHAR(10000) NOT NULL
 );
 
 CREATE TABLE GROUPS (
@@ -108,3 +108,74 @@ CREATE TABLE EMAILS (
 SELECT * FROM USERS 
 NATURAL LEFT JOIN USER_DISPLAY_PICTURES
 NATURAL LEFT JOIN EMAILS;
+
+-- crazy qury
+SELECT 
+	Group_id, 
+	Group_name, 
+	Image_url as Group_Display_picture, 
+	count(User_id) as Member_count,
+	Trip_count,
+	Image_count
+FROM GROUPS
+NATURAL LEFT JOIN GROUP_DISPLAY_PICTURES
+NATURAL LEFT JOIN GROUP_MEMBERS
+NATURAL LEFT JOIN (
+		
+	SELECT 
+		Group_id, 
+		count(Trip_id) as Trip_count
+	FROM GROUPS 
+	NATURAL LEFT JOIN TRIPS
+	GROUP BY Group_id
+) g1 NATURAL LEFT JOIN (
+
+	SELECT 
+		Group_id,
+		count(Image_id) as Image_count
+	FROM GROUPS
+	NATURAL LEFT JOIN TRIPS
+	NATURAL LEFT JOIN IMAGES 
+	GROUP BY Group_id
+) g2 WHERE Group_id IN (
+	SELECT Group_id
+	FROM GROUPS 
+	NATURAL LEFT JOIN GROUP_MEMBERS
+	WHERE User_id = "6969") 
+GROUP BY Group_id;
+
+
+
+
+where Group_id IN (
+	SELECT Group_id
+	FROM GROUPS 
+	NATURAL LEFT JOIN GROUP_MEMBERS
+	WHERE User_id = "6969")
+
+SELECT 
+Group_id,
+count(Image_id) as Image_count
+FROM IMAGES NATURAL LEFT JOIN TRIPS
+GROUP BY Group_id;
+
+
+
+INSERT INTO TRIP_MEMBERS
+VALUES
+(1, "6969"),
+(2, "6969"),
+(2, "asd");
+
+INSERT INTO TRIPS(Trip_name, Group_id) VALUES
+("yako", 7);
+
+INSERT INTO IMAGES (
+	Image_url,
+	Image_time,
+	Image_lat,
+	Image_lng,
+	User_id,
+	Trip_id
+) VALUES 
+("abc://asaasdsdd", "2018-02-10 10-12-11", 112.213, 13.123, "asd", 4);
