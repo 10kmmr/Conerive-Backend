@@ -12,11 +12,12 @@ var querystring = require("querystring");
 router.use(bodyParser.urlencoded({extended:true}));
 
 // =====================
-//      ROUTES
+//     GROUPS ROUTES
 // =====================
 
 // INDEX - return all groups
 router.get('/', function(req, res) {
+<<<<<<< HEAD
 	
 	var userId = req.body.userId;
 	var connection = mysql.createConnection(connectionObject);
@@ -70,6 +71,9 @@ router.get('/', function(req, res) {
 			});
 		}
 	});
+=======
+	res.send("groups index");
+>>>>>>> 67025e020fbf089d8a57ab339aafecc5f61b8ac1
 });
 
 // NEW - screen to create new group
@@ -123,3 +127,29 @@ router.delete("/:id", function(req, res){
 });
 
 module.exports = router;
+
+// =======================
+//  GROUP LIST ROUTES
+// =======================
+
+router.get('/groupList/:userId', function(req, res) {
+	var userId = req.params.userId;
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		if(err) { console.log(err) }
+		else{
+			var queryFields = "Group_name, Admin_id";
+			var values = [[groupName, adminId]];
+			var query = 'SELECT * FROM GROUP_SUMMARY WHERE Group_id IN ( '
+			query += 'SELECT Group_id from GROUP_MEMBERS WHERE User_id = ?'
+			connection.query(query, [values], function(err2, results, fields){
+				if (err2) { console.log(err2); }
+				else {
+					console.log("group inserted with id "+results.insertId);
+					connection.end();
+					res.send(results);
+				}
+			});
+		}
+	});
+});

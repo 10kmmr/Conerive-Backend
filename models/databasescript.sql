@@ -27,7 +27,7 @@ CREATE TABLE GROUPS (
 
 CREATE TABLE GROUP_DISPLAY_PICTURES (
 	Group_id INT PRIMARY KEY,
-	Image_url VARCHAR(100) NOT NULL,
+	Image_url VARCHAR(10000) NOT NULL,
 	FOREIGN KEY(Group_id) REFERENCES GROUPS(Group_id) ON DELETE CASCADE
 );
 
@@ -82,7 +82,7 @@ CREATE TABLE VEHICLE_MEMBERS (
 
 CREATE TABLE IMAGES (
 	Image_id INT AUTO_INCREMENT PRIMARY KEY,
-	Image_url VARCHAR(100) NOT NULL,
+	Image_url VARCHAR(10000) NOT NULL,
 	Image_time DATETIME NOT NULL,
 	Image_lat DOUBLE NOT NULL,
 	Image_lng DOUBLE NOT NULL,
@@ -104,78 +104,32 @@ CREATE TABLE EMAILS (
 -- instagram auth
 -- facebook auth
 
--- SELECT COMMANDS
-SELECT * FROM USERS 
-NATURAL LEFT JOIN USER_DISPLAY_PICTURES
-NATURAL LEFT JOIN EMAILS;
-
--- crazy qury
-SELECT 
+-- VIEWS
+CREATE VIEW GROUP_SUMMARY AS SELECT 
 	Group_id, 
 	Group_name, 
-	Image_url as Group_Display_picture, 
-	count(User_id) as Member_count,
+	Image_url AS Group_Display_picture, 
+	COUNT(User_id) AS Member_count,
 	Trip_count,
 	Image_count
 FROM GROUPS
 NATURAL LEFT JOIN GROUP_DISPLAY_PICTURES
 NATURAL LEFT JOIN GROUP_MEMBERS
 NATURAL LEFT JOIN (
-		
 	SELECT 
-		Group_id, 
-		count(Trip_id) as Trip_count
+	Group_id, 
+	COUNT(Trip_id) AS Trip_count
 	FROM GROUPS 
 	NATURAL LEFT JOIN TRIPS
 	GROUP BY Group_id
 ) g1 NATURAL LEFT JOIN (
-
 	SELECT 
-		Group_id,
-		count(Image_id) as Image_count
+	Group_id,
+	COUNT(Image_id) AS Image_count
 	FROM GROUPS
 	NATURAL LEFT JOIN TRIPS
 	NATURAL LEFT JOIN IMAGES 
 	GROUP BY Group_id
-) g2 WHERE Group_id IN (
-	SELECT Group_id
-	FROM GROUPS 
-	NATURAL LEFT JOIN GROUP_MEMBERS
-	WHERE User_id = "6969") 
+) g2 
 GROUP BY Group_id;
 
-
-
-
-where Group_id IN (
-	SELECT Group_id
-	FROM GROUPS 
-	NATURAL LEFT JOIN GROUP_MEMBERS
-	WHERE User_id = "6969")
-
-SELECT 
-Group_id,
-count(Image_id) as Image_count
-FROM IMAGES NATURAL LEFT JOIN TRIPS
-GROUP BY Group_id;
-
-
-
-INSERT INTO TRIP_MEMBERS
-VALUES
-(1, "6969"),
-(2, "6969"),
-(2, "asd");
-
-INSERT INTO TRIPS(Trip_name, Group_id) VALUES
-("yako", 7);
-
-INSERT INTO IMAGES (
-	Image_url,
-	Image_time,
-	Image_lat,
-	Image_lng,
-	User_id,
-	Trip_id
-) VALUES 
-("abc://asaasdsdd", "2018-02-10 10-12-11", 112.213, 13.123, "asd", 4);
