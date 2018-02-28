@@ -83,14 +83,12 @@ router.get('/groupList/:userId', function(req, res) {
 	connection.connect(function (err) {
 		if(err) { console.log(err) }
 		else{
-			var queryFields = "Group_name, Admin_id";
-			var values = [[groupName, adminId]];
 			var query = 'SELECT * FROM GROUP_SUMMARY WHERE Group_id IN ( '
-			query += 'SELECT Group_id from GROUP_MEMBERS WHERE User_id = ?'
-			connection.query(query, [values], function(err2, results, fields){
+			query += 'SELECT Group_id from GROUP_MEMBERS WHERE User_id = "'+userId+'")';
+			connection.query(query, function(err2, results, fields){
 				if (err2) { console.log(err2); }
 				else {
-					console.log("group inserted with id "+results.insertId);
+					console.log(results);
 					connection.end();
 					res.send(results);
 				}
