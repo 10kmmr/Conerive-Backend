@@ -27,7 +27,7 @@ router.get('/new', function(req, res){
 
 // CREATE - creates a new user
 router.post("/", function(req, res){
-
+	console.log("trying to connects to user/ ");
 	var userId = req.body.userId;
 	var name = req.body.name;
 	var phone = req.body.phone;

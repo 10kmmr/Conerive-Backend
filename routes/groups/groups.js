@@ -12,68 +12,12 @@ var querystring = require("querystring");
 router.use(bodyParser.urlencoded({extended:true}));
 
 // =====================
-//     GROUPS ROUTES
+//      ROUTES
 // =====================
 
 // INDEX - return all groups
 router.get('/', function(req, res) {
-<<<<<<< HEAD
-	
-	var userId = req.body.userId;
-	var connection = mysql.createConnection(connectionObject);
-	connection.connect(function (err) {
-		if(err) { console.log(err) }
-		else{
-			var queryFields = "User_id, Name, Phone";
-			var values = [[userId, name, phone]];
-			var query = `
-			SELECT 
-			Group_id, 
-			Group_name, 
-			Image_url as Group_Display_picture, 
-			count(User_id) as Member_count,
-			Trip_count,
-			Image_count
-		FROM GROUPS
-		NATURAL LEFT JOIN GROUP_DISPLAY_PICTURES
-		NATURAL LEFT JOIN GROUP_MEMBERS
-		NATURAL LEFT JOIN (
-				
-			SELECT 
-				Group_id, 
-				count(Trip_id) as Trip_count
-			FROM GROUPS 
-			NATURAL LEFT JOIN TRIPS
-			GROUP BY Group_id
-		) g1 NATURAL LEFT JOIN (
-		
-			SELECT 
-				Group_id,
-				count(Image_id) as Image_count
-			FROM GROUPS
-			NATURAL LEFT JOIN TRIPS
-			NATURAL LEFT JOIN IMAGES 
-			GROUP BY Group_id
-		) g2 WHERE Group_id IN (
-			SELECT Group_id
-			FROM GROUPS 
-			NATURAL LEFT JOIN GROUP_MEMBERS
-			WHERE User_id = `+ userId +`) 
-		GROUP BY Group_id;
-		`
-			connection.query(query, [values], function(err2, results, fields){
-				if (err2) { console.log(err2); }
-				else {
-					console.log("user inserted");
-					connection.end();
-					res.send(results);
-				}
-			});
-		}
-	});
-=======
-	res.send("groups index");
->>>>>>> 67025e020fbf089d8a57ab339aafecc5f61b8ac1
+	res.send("no index");
 });
 
 // NEW - screen to create new group
@@ -127,29 +71,3 @@ router.delete("/:id", function(req, res){
 });
 
 module.exports = router;
-
-// =======================
-//  GROUP LIST ROUTES
-// =======================
-
-router.get('/groupList/:userId', function(req, res) {
-	var userId = req.params.userId;
-	var connection = mysql.createConnection(connectionObject);
-	connection.connect(function (err) {
-		if(err) { console.log(err) }
-		else{
-			var queryFields = "Group_name, Admin_id";
-			var values = [[groupName, adminId]];
-			var query = 'SELECT * FROM GROUP_SUMMARY WHERE Group_id IN ( '
-			query += 'SELECT Group_id from GROUP_MEMBERS WHERE User_id = ?'
-			connection.query(query, [values], function(err2, results, fields){
-				if (err2) { console.log(err2); }
-				else {
-					console.log("group inserted with id "+results.insertId);
-					connection.end();
-					res.send(results);
-				}
-			});
-		}
-	});
-});

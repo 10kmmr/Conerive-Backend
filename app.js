@@ -16,6 +16,7 @@ var tripMembers = require('./routes/trip_members');
 var images = require('./routes/images');
 var vehicles = require('./routes/vehicles/vehicles');
 var vehicleMembers = require('./routes/vehicle_members');
+var FCM = require('./routes/FCM');
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.use('/trip-members', tripMembers);
 app.use('/images', images);
 app.use('/vehicles', vehicles);
 app.use('/vehicle-members', vehicleMembers);
+app.use('/FCM',FCM);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -16,7 +16,7 @@ var PrithviLocal = {
 
 
 var NetworkDB = {
-    host: "35.200.251.111",
+    host: "192.168.1.112",
     user: 'root',
     password: 'Abhijeeth29$',
     database: 'conerivedev',

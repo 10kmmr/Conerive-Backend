@@ -30,7 +30,6 @@ router.post("/", function(req, res){
 	var groupId = req.body.groupId;
 	var displayPictureURL = req.body.displayPictureURL;
 	if (displayPictureURL!=null && displayPictureURL!=null){
-		
 		var connection = mysql.createConnection(connectionObject);
 		connection.connect(function (err) {
 			if(err) { console.log(err) }
