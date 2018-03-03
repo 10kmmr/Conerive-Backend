@@ -76,15 +76,15 @@ router.post("/notification/GroupInvitation", function (req, res) {
             });
         }
     });
-
-    // GroupInvitation_Notification(token, res);
+    
+    GroupInvitation_Notification(token, res,GroupName,SenderName);
 });
 
-function GroupInvitation_Notification(Registerationtoken, respon) {
+function GroupInvitation_Notification(Registerationtoken, respon ,GroupName,SenderName) {
     var payload = {
         notification: {
-            title: "This is a Notification",
-            body: "This is the body of the notification message."
+            title: "Group Invitation",
+            body: "Invited to Group " + GroupName + "  by " +  SenderName
         }
     };
     var options = {
