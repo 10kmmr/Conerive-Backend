@@ -4,7 +4,7 @@ var app = express();
 
 //ROUTE FILES
 var index = require('./routes/index');
-var fcm = require('./routes/FCM');
+var fcm = require('./routes/FCM/fcm');
 
 //Routes
 app.use('/', index);

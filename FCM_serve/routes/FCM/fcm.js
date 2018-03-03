@@ -21,7 +21,7 @@ router.get('/', function (req, res) {
 //     // });
 //     var userId = req.body.userId;
 //     var token = req.body.token;
-    
+
 // });
 
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -54,19 +54,33 @@ router.post('/newtoken', function (req, res) {
 });
 
 router.post("/notification/GroupInvitation", function (req, res) {
-    /*
-   {
-    Name:
-    Phone:
+    var senderId = req.body.senderId;
+    var receiverPhoneNumber = req.body.receiverPhoneNumber;
+    var groupId = req.body.groupId;
+    var groupName = req.body.groupName;
 
-   }
-   return token of phone 
-   then run call back send GroupInvitation_Notification
-   */
-  GroupInvitation_Notification(token,res);
+    var connection = mysql.createConnection(connectionObject);
+    connection.connect(function (err) {
+        if (err) { console.log(err) }
+        else {
+            var queryFields = "Sender_id, Receiver_id, Group_id";
+            var query = "INSERT INTO GROUP_INVITE_NOTIFICATION(" + queryFields + ") VALUES "
+            query += '("' + senderId + '", (select User_id from users where phone = ' + receiverPhoneNumber +'), ' + groupId + ')'
+            connection.query(query, function (err2, results, fields) {
+                if (err2) { console.log(err2); }
+                else {
+                    console.log("notification inserted");
+                    connection.end();
+                    res.send(results);
+                }
+            });
+        }
+    });
+
+    // GroupInvitation_Notification(token, res);
 });
 
-function GroupInvitation_Notification(Registerationtoken,respon){
+function GroupInvitation_Notification(Registerationtoken, respon) {
     var payload = {
         notification: {
             title: "This is a Notification",
@@ -85,7 +99,7 @@ function GroupInvitation_Notification(Registerationtoken,respon){
         .catch(function (error) {
             console.log("Error sending message:", error);
             respon.send(error);
-    });
+        });
 }
 
 router.post("/notification/redCircle", function (req, res) {
@@ -98,7 +112,7 @@ router.post("/notification/redCircle", function (req, res) {
    return token of phone 
    then run call back send GroupInvitation_Notification
    */
-  GroupInvitation_Notification(token,res);
+    GroupInvitation_Notification(token, res);
 });
 
 
