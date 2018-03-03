@@ -131,4 +131,27 @@ router.delete("/:userId", function(req, res){
 	});
 });
 
+// =======================
+//  USER LIST ROUTES
+// =======================
+
+router.get('/userList/:groupId', function (req, res) {
+	var groupId = req.params.groupId;
+	var connection = mysql.createConnection(connectionObject);
+	connection.connect(function (err) {
+		if (err) { console.log(err) }
+		else {
+			var query = 'SELECT * FROM USER_SUMMARY WHERE Group_id = ' + groupId;
+			connection.query(query, function (err2, results, fields) {
+				if (err2) { console.log(err2); }
+				else {
+					console.log(results);
+					connection.end();
+					res.send(results);
+				}
+			});
+		}
+	});
+});
+
 module.exports = router;

@@ -71,7 +71,6 @@ router.delete("/:id", function(req, res){
 	// TODO - delete image from DB
 });
 
-module.exports = router;
 
 // =======================
 //  GROUP LIST ROUTES
@@ -96,3 +95,5 @@ router.get('/groupList/:userId', function(req, res) {
 		}
 	});
 });
+
+module.exports = router;
