@@ -17,11 +17,7 @@ router.use(bodyParser.urlencoded({extended:true}));
 
 // INDEX - return all groups
 router.get('/', function(req, res) {
-<<<<<<< HEAD
-	res.send("no index");
-=======
 	res.send("groups index");
->>>>>>> 8cf84f097184ff19f199fbc7c3b0134a6b4346c0
 });
 
 // NEW - screen to create new group
@@ -75,12 +71,7 @@ router.delete("/:id", function(req, res){
 	// TODO - delete image from DB
 });
 
-<<<<<<< HEAD
 module.exports = router;
-<<<<<<< HEAD
-=======
-=======
->>>>>>> e88965ee2f5a33e2005823b1daddb2395e71f1e0
 
 // =======================
 //  GROUP LIST ROUTES
@@ -105,9 +96,3 @@ router.get('/groupList/:userId', function(req, res) {
 		}
 	});
 });
-<<<<<<< HEAD
->>>>>>> 8cf84f097184ff19f199fbc7c3b0134a6b4346c0
-=======
-
-module.exports = router;
->>>>>>> e88965ee2f5a33e2005823b1daddb2395e71f1e0
