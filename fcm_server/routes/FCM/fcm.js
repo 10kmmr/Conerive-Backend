@@ -76,8 +76,25 @@ router.post("/notification/GroupInvitation", function (req, res) {
             });
         }
     });
+
+//     var connection = mysql.createConnection(connectionObject);
+//     connection.connect(function (err) {
+//         if (err) { console.log(err) }
+//         else {
+//             var query = "SELECT Token FROM USER_REGISTRATION_TOKEN where User_id = " + ;
+//             query += '("' + senderId + '", (select User_id from users where phone = ' + receiverPhoneNumber + '), ' + groupId + ')'
+//             connection.query(query, function (err2, results, fields) {
+//                 if (err2) { console.log(err2); }
+//                 else {
+//                     console.log("notification inserted");
+//                     connection.end();
+//                     res.send(results);
+//                 }
+//             });
+//         }
+//     });
     
-    GroupInvitation_Notification(token, res,GroupName,SenderName);
+//     GroupInvitation_Notification(token, res,GroupName,SenderName);
 });
 
 function GroupInvitation_Notification(Registerationtoken, respon ,GroupName,SenderName) {
