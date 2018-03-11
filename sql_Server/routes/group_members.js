@@ -98,7 +98,7 @@ router.get("/notifications/:userId", function (req, res) {
 });
 
 // DESTROY - deletes a notification from the DB
-router.delete("/:notificationId", function (req, res) {
+router.delete("/notifications/:notificationId", function (req, res) {
 	var notificationId = req.params.notificationId;
 	var connection = mysql.createConnection(connectionObject);
 	connection.connect(function (err) {
