@@ -14,6 +14,7 @@ var router = express.Router();
 router.get('/', function (req, res) {
     res.send("welcome to the FCM API")
 });
+
 // router.post('/sendInvitation', function (req, res) {
 //     // var parms = {
 //     // }
@@ -65,43 +66,44 @@ router.post("/notification/GroupInvitation", function (req, res) {
         else {
             var queryFields = "Sender_id, Receiver_id, Group_id";
             var query = "INSERT INTO GROUP_INVITE_NOTIFICATION(" + queryFields + ") VALUES "
-            query += '("' + senderId + '", (select User_id from users where phone = ' + receiverPhoneNumber +'), ' + groupId + ')'
+            query += '("' + senderId + '", (select User_id from users where phone = ' + receiverPhoneNumber + '), ' + groupId + ')'
             connection.query(query, function (err2, results, fields) {
                 if (err2) { console.log(err2); }
                 else {
                     console.log("notification inserted");
                     connection.end();
-                    res.send(results);
+                    
+                    //get name of sender
+                    connection = mysql.createConnection(connectionObject);
+                    connection.connect(function (err) {
+                        if (err) { console.log(err) }
+                        else {
+                            
+                            var query = "SELECT Token FROM USERS";
+                            query += " NATURAL LEFT JOIN USER_REGISTRATION_TOKEN";
+                            query += " WHERE Phone = '" + receiverPhoneNumber + "'";
+                            connection.query(query, function (err2, results, fields) {
+                                if (err2) { console.log(err2); }
+                                else {
+                                    console.log(results[0]["Token"]);
+                                    connection.end();
+                                    GroupInvitation_Notification(results[0]["Token"], res, groupName, senderId);
+                                }
+                            });
+                        }
+                    });
+
                 }
             });
         }
     });
-
-//     var connection = mysql.createConnection(connectionObject);
-//     connection.connect(function (err) {
-//         if (err) { console.log(err) }
-//         else {
-//             var query = "SELECT Token FROM USER_REGISTRATION_TOKEN where User_id = " + ;
-//             query += '("' + senderId + '", (select User_id from users where phone = ' + receiverPhoneNumber + '), ' + groupId + ')'
-//             connection.query(query, function (err2, results, fields) {
-//                 if (err2) { console.log(err2); }
-//                 else {
-//                     console.log("notification inserted");
-//                     connection.end();
-//                     res.send(results);
-//                 }
-//             });
-//         }
-//     });
-    
-//     GroupInvitation_Notification(token, res,GroupName,SenderName);
 });
 
-function GroupInvitation_Notification(Registerationtoken, respon ,GroupName,SenderName) {
+function GroupInvitation_Notification(Registerationtoken, respon, GroupName, SenderName) {
     var payload = {
         notification: {
             title: "Group Invitation",
-            body: "Invited to Group " + GroupName + "  by " +  SenderName
+            body: "Invited to Group " + GroupName + "  by " + SenderName
         }
     };
     var options = {

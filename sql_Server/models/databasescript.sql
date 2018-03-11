@@ -54,7 +54,7 @@ CREATE TABLE GROUP_MEMBERS (
 );
 
 CREATE TABLE GROUP_INVITE_NOTIFICATION (
-	
+	Notification_id INT AUTO_INCREMENT PRIMARY KEY,
 	Sender_id VARCHAR(100) NOT NULL,
 	Receiver_id VARCHAR(100) NOT NULL,
 	Group_id INT NOT NULL,
@@ -185,3 +185,11 @@ NATURAL LEFT JOIN GROUP_MEMBERS
 NATURAL LEFT JOIN USERS
 NATURAL LEFT JOIN USER_DISPLAY_PICTURES
 ORDER BY Name;
+
+CREATE VIEW NOTIFICATIONS AS 
+SELECT n.Group_id, g.Group_name, gdp.Image_url, n.Notification_id, n.Sender_id, n.Receiver_id, s.Name as Sender_name, r.Name as Receiver_name
+FROM GROUP_INVITE_NOTIFICATION n
+NATURAL LEFT JOIN GROUPS g 
+NATURAL LEFT JOIN group_display_pictures gdp
+LEFT JOIN USERS s ON s.User_id = n.Sender_id
+LEFT JOIN USERS r ON r.User_id = n.Receiver_id;
