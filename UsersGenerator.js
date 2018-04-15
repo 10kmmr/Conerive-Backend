@@ -1,7 +1,7 @@
 const admin = require('firebase-admin');
 
 var serviceAccount = require('./Conerive-d52cd6e292fe.json');
-var randomstring = require("randomstring");
+//var randomstring = require("randomstring");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
@@ -21,11 +21,16 @@ function addusers(a) {
                 length: 13,
                 charset: 'numeric '
             }),
-            Groups:['bT6JTQO0HAxk9wJwd049']
+            Groups: ['bT6JTQO0HAxk9wJwd049']
         });
     }
 }
 
+function test() {
+    db.collection("USERS").where("Phone", "==", "+919902508248").get().then(reciverdetails => {
+        console.log(reciverdetails.docs[0].id)
+    })
+}
+test();
 
 
-addusers(5)
