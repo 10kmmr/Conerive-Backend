@@ -23,7 +23,9 @@ function GroupInvitation_Notification(Registerationtoken, respon, GroupName, Sen
             respon.send(error);
         });
 }
-
+app.listen(process.env.PORT || 3000, () => {
+    console.log("Api up and running");
+});
 
 
 app.get('/', function (req, res) {
@@ -31,7 +33,3 @@ app.get('/', function (req, res) {
 });
 
 
-
-app.listen(7777, function () {
-    console.log("conerive FCM < server is running");
-});
