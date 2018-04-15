@@ -36,9 +36,6 @@ function FriendInvite_Notification(Registerationtoken, respon, SenderName) {
             respon.send(error);
         });
 }
-app.listen(process.env.PORT || 3000, () => {
-    console.log("Api up and running");
-});
 
 // (function test(){
 
@@ -54,15 +51,20 @@ app.get('/', function (req, res) {
 app.post('/sendrequest', function (req, res) {
     var userId = req.body.senderId;
     var tosendphonenumber = req.body.phone;
+    console.log(userId,tosendphonenumber)
     db.collection('USERS').doc(userId).get().then(userdetails=>{
         db.collection("USERS").where("Phone","==", tosendphonenumber).get().then(reciverdetails=>{
-            FriendInvite_Notification(reciverdetails.docs[0].data().Name,respon,userdetails.Name);
+            FriendInvite_Notification(reciverdetails.docs[0].data().Token,res,userdetails.Name);
             let temp={};
             temp["Sender_id"]=userId;
             temp["Type"]="FRIEND_REQUEST";
-            db.collection("USERS").doc(reciverdetails.docs[0].id).collection("NOTIFICATION").add(temp);
+            db.collection("USERS").doc(reciverdetails.docs[0].id).collection("NOTIFICATIONS").add(temp);
         }); 
     });
 });
+app.listen(process.env.PORT || 3000, () => {
+    console.log("Api up and running");
+});
+
 
 
