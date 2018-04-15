@@ -1,12 +1,23 @@
 var express = require('express');
 var app = express();
 const cors = require("cors");
+const admin = require('firebase-admin');
+
+var serviceAccount = require('./Conerive-d52cd6e292fe.json');
+
 app.use(cors({ origin: true }));
-function GroupInvitation_Notification(Registerationtoken, respon, GroupName, SenderName) {
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
+
+var db = admin.firestore(); 
+
+function FriendInvite_Notification(Registerationtoken, respon, SenderName) {
     var payload = {
         notification: {
-            title: "Group Invitation",
-            body: "Invited to Group " + GroupName + "  by " + SenderName
+            title: "Friend Invitation",
+            body: "Friend Requestion" + SenderName
         }
     };
     var options = {
@@ -30,6 +41,16 @@ app.listen(process.env.PORT || 3000, () => {
 
 app.get('/', function (req, res) {
     res.send("hello abhi");
+});
+
+app.post('/sentrequest', function (req, res) {
+    var userId = req.body.senderuserId;
+    var tosendphonenumber = req.body.tosendphonenumber;
+    db.collection('USERS').doc(userId).get().then(userdetails=>{
+        db.collection("USERS").whereEqualTo("Phone", tosendphonenumber).get().then(reciverdetails=>{
+            FriendInvite_Notification(reciverdetails.Token,respon,userdetails.Name);
+        })
+    });
 });
 
 
