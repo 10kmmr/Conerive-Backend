@@ -54,7 +54,7 @@ app.post('/sendrequest', function (req, res) {
     console.log(userId,tosendphonenumber)
     db.collection('USERS').doc(userId).get().then(userdetails=>{
         db.collection("USERS").where("Phone","==", tosendphonenumber).get().then(reciverdetails=>{
-            FriendInvite_Notification(reciverdetails.docs[0].data().Token,res,userdetails.Name);
+            FriendInvite_Notification(reciverdetails.docs[0].data().Token,userdetails.Name);
             let temp={};
             temp["Sender_id"]=userId;
             temp["Type"]="FRIEND_REQUEST";
