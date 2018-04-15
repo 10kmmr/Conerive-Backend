@@ -51,9 +51,9 @@ app.get('/', function (req, res) {
     res.send("hello abhi");
 });
 
-app.post('/sendrequest', function (req, res) {Phone
-    var userId = req.body.senderuserId;
-    var tosendphonenumber = req.body.tosendphonenumber;
+app.post('/sendrequest', function (req, res) {
+    var userId = req.body.senderId;
+    var tosendphonenumber = req.body.phone;
     db.collection('USERS').doc(userId).get().then(userdetails=>{
         db.collection("USERS").where("Phone","==", tosendphonenumber).get().then(reciverdetails=>{
             FriendInvite_Notification(reciverdetails.docs[0].data().Name,respon,userdetails.Name);
