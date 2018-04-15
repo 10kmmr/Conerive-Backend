@@ -40,7 +40,7 @@ function GroupInvitation_Notification(Registerationtoken, respon, GroupName, Sen
 
 
 //Routes
-router.get('/', function (req, res) {
+app.get('/', function (req, res) {
     res.send("hello world - from index");
 });
 
