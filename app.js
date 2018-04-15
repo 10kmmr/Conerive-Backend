@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
-
+const cors = require("cors");
+app.use(cors({ origin: true }));
 function GroupInvitation_Notification(Registerationtoken, respon, GroupName, SenderName) {
     var payload = {
         notification: {
