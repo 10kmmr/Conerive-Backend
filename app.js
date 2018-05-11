@@ -26,6 +26,7 @@ function FriendInvite_Notification(Registerationtoken, respon, SenderName) {
         priority: "high",
         timeToLive: 60 * 60 * 24
     };
+    
     admin.messaging().sendToDevice(Registerationtoken, payload, options)
         .then(function (response) {
             console.log("Successfully sent message:", response);
@@ -35,6 +36,7 @@ function FriendInvite_Notification(Registerationtoken, respon, SenderName) {
             console.log("Error sending message:", error);
             respon.send(error);
         });
+        
 }
 
 app.get('/', function (req, res) {
@@ -42,18 +44,12 @@ app.get('/', function (req, res) {
 });
 
 app.post('/sendrequest', function (req, res) {
-    var userId = req.body.senderId;
-    var tosendphonenumber = req.body.phone;
+    var SenderName = req.body.SenderName;
+    var Token = req.body.Token;
+    var SenderImage = req.body.SenderImage; 
     console.log(userId,tosendphonenumber)
-    db.collection('USERS').doc(userId).get().then(userdetails=>{
-        db.collection("USERS").where("Phone","==", tosendphonenumber).get().then(reciverdetails=>{
-            FriendInvite_Notification(reciverdetails.docs[0].data().Token,res,userdetails.data().Name);
-            let temp={};
-            temp["Sender_id"]=userId;
-            temp["Type"]="FRIEND_REQUEST";
-            db.collection("USERS").doc(reciverdetails.docs[0].id).collection("NOTIFICATIONS").add(temp);
-        }); 
-    });
+    FriendInvite_Notification(Token,res,SenderName);
+   
 });
 app.listen(process.env.PORT || 3000, () => {
     console.log("Api up and running");
