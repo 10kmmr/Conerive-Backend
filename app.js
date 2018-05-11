@@ -15,11 +15,11 @@ admin.initializeApp({
 
 var db = admin.firestore(); 
 
-function FriendInvite_Notification(Registerationtoken, respon, SenderName) {
+function FriendInvite_Notification(Registerationtoken, respon, SenderName ,SenderImage) {
     var payload = {
         notification: {
             title: "Friend Invitation",
-            body: "Friend Requestion " + SenderName
+            body: "Friend Request " + SenderName
         }
     };
     var options = {
@@ -47,8 +47,7 @@ app.post('/sendrequest', function (req, res) {
     var SenderName = req.body.SenderName;
     var Token = req.body.Token;
     var SenderImage = req.body.SenderImage; 
-    console.log(userId,tosendphonenumber)
-    FriendInvite_Notification(Token,res,SenderName);
+    FriendInvite_Notification(Token,res,SenderName,SenderImage);
    
 });
 app.listen(process.env.PORT || 3000, () => {
