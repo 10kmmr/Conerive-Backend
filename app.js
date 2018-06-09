@@ -67,11 +67,10 @@ app.get('/', function (req, res) {
 });
 
 app.post('/sendFriendRequest', function (req, res) {
-    var SenderName = req.body.SenderName;
+    var SenderNamee = req.body.SenderName;
     var Token = req.body.Token;
     var SenderImage = req.body.SenderImage; 
-    FriendInvite_Notification(Token,res,SenderName,SenderImage);
-   
+    FriendInvite_Notification(Token,res,SenderNamee,SenderImage);
 });
 app.post('/sendTripRequest', function (req, res) {
     var SenderName = req.body.SenderName;
