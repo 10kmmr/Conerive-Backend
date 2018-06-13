@@ -98,9 +98,9 @@ async function SetFolder(id, drive) {
     **/
 }
 app.post('/SetUpTrip', async function (req, res) {
-    console.log("SetupTrip : AuthCode " + AuthCode);
     let tripName = req.body.TripName;
     let AuthCode = req.body.AuthCode;
+    console.log("SetupTrip : AuthCode " + AuthCode);
     let mOject = await OAuthHandler.Config(AuthCode);
     var drive = google.drive({
         version: 'v3',
