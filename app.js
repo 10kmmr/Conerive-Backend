@@ -5,7 +5,7 @@ const admin = require('firebase-admin');
 var bodyParser = require('body-parser');
 
 
-import { Oauth, Config } from './OAuthHandler';
+const OAuthHandler = require('./OAuthHandler');
 const { google } = require('googleapis');
 
 var serviceAccount = require('./Conerive-d52cd6e292fe.json');
@@ -66,62 +66,54 @@ function FriendInvite_Notification(Registerationtoken, respon, SenderName, Sende
 
 }
 
-async function CreateFolder(mOauth) {
+async function CreateFolder(drive, TripName) {
     const res = await drive.files.create({
+        fields:"capabilities(canAddChildren,canDelete,canEdit,canListChildren,canReadTeamDrive,canRemoveChildren,canShare),contentHints/thumbnail/mimeType,createdTime,id,mimeType,permissionIds,size,webContentLink,webViewLink",
         requestBody: {
             name: TripName,
             description: "Conerive Trip : " + TripName + " photos",
-            mimeType: 'application/vnd.google-apps.drive-sdk'
+            mimeType: 'application/vnd.google-apps.folder'
         },
     });
-    if (res.status == 400)
-        return res;
-    else
-        console.log("Status of CreateFile : error");
+    return res;
+    /*
+    * do error handing before returning 
+    **/
 }
-async function SetFolder(id) {
+async function SetFolder(id, drive) {
     const res = await drive.permissions.create({
         fileId: id,
         requestBody: {
             role: "writer",
             "type": "anyone"
         },
-        sendNotificationEmail:false,
-        sendNotificationEmail:false,
-        transferOwnership:false,
-        useDomainAdminAccess:false
+        sendNotificationEmail: false,
+        sendNotificationEmail: false,
+        transferOwnership: false,
+        useDomainAdminAccess: false
     });
-    if(res.status==400){
-        return res
-    }else
-     console.log("Status of permissions : error");
+    return res
+    /*
+    * do error handing before returning 
+    **/
 }
 app.post('/SetUpTrip', async function (req, res) {
-    let tripid = res.body.TripId;
-    let tripName = res.body.TripName;
-    let AuthCode = res.body.AuthCode;
-    let UserId = res.body.UserId;
-    let mOauth = await Config(AuthCode);
+    console.log("SetupTrip : AuthCode " + AuthCode);
+    let tripName = req.body.TripName;
+    let AuthCode = req.body.AuthCode;
+    let mOject = await OAuthHandler.Config(AuthCode);
     var drive = google.drive({
         version: 'v3',
-        auth: mOauth
+        auth: mOject.oauth2Client
     });
-    let resCreateFolder = await CreateFolder(mOauth);
-    let resPermission = await SetFolder(res.data.id);
-    let resObject={};
-    if(completed){
-        resObject["Completed"]=1;
-        resObject["Response from create"]=resCreateFolder;
-        resObject["Response from Permission"]=resPermission;
-    }else{
-        resObject["Completed"]=0;
-        resObject["Response from create"]=resCreateFolder;
-        resObject["Response from Permission"]=resPermission;
-    }
+    let resCreateFolder = await CreateFolder( drive, tripName);
+    let resPermission = await SetFolder(resCreateFolder.data.id, drive);
     /*
     * Write the web link trip in db
+    * Handle errors andmake error messages
     */
-    res.send(resObject);
+   let responseObject =Object.assign(resCreateFolder.data,mOject.getTokens());
+    res.send(responseObject);
 });
 
 app.get('/', function (req, res) {
